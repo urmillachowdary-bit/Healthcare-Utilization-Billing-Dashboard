@@ -1,72 +1,66 @@
-# Healthcare Utilization & Billing Dashboard
+# Healthcare Analytics Dashboards
 
-An interactive, browser-based healthcare analytics dashboard exploring **55,500 synthetic admission records**. Built as a standalone web page using **HTML, CSS, JavaScript, and D3.js**, with clickable cross-filters, a date-range selector, and a configurable time-series chart. Created as an independent, AI-assisted recreation of a publicly shared Tableau dashboard.
+An interactive, browser-based healthcare analytics portfolio combining **two dashboards** in a single page:
 
-## Live dashboard
+1. **Healthcare Revenue Cycle & Claims** — utilization and billing patterns across 55,500 synthetic healthcare admission records.
+2. **Hospital Operations & Resource Utilization Analysis** — throughput, admissions, department referrals, and waiting-time performance across 9,216 synthetic emergency room visits.
 
-**[Open the interactive dashboard](https://urmillachowdary-bit.github.io/Healthcare-Utilization-Billing-Dashboard/)**
+**Live dashboard (after GitHub Pages is enabled):**  
+https://urmillachowdary-bit.github.io/Healthcare-Utilization-Billing-Dashboard/
 
-> The live link will work only after GitHub Pages is enabled and deployed for this repository.
+![Preview of both dashboard tabs](dashboard-preview.png)
 
-## Dashboard preview
+## How to open
 
-![Dashboard screenshot](dashboard-preview.png)
+Open `index.html` in a modern browser, or visit the GitHub Pages URL above after publishing. Use the two top tabs to switch between dashboards. The HTML includes its CSS, JavaScript, D3 library, and compressed synthetic datasets, so it does not need a server or installation.
 
-## Business questions
+## Dashboard 1 — Revenue Cycle & Claims
 
-- Which medical conditions drive the largest number of hospital admissions?
-- How do billing amounts differ across insurance providers?
-- How do average length of stay and average billing change over time?
-- How does billing vary by medical condition and test-result category?
+- **55,500 admission records** in the source dataset (not necessarily 55,500 unique patients)
+- Average billed amount per record: approximately **$25,539**
+- Average length of stay: **15.5 days**
+- Abnormal test result rate: **33.6%**
+- Admissions by medical condition and admission type
+- Billing comparison across insurance providers
+- Monthly length-of-stay/billing trend toggle
+- Billing heatmap by condition and test result
+- Date range and chart-click filtering
 
-## Charts and features
+**Interpretation note:** The dataset represents synthetic hospital visits and billed amounts. It does not contain insurance claim denial decisions or actual reimbursement payments; the title "Revenue Cycle & Claims" describes the broader business context, not a validated claims-denial model. The patient-level billing calculation groups by the `Name` field and therefore should not be treated as a reliable unique-patient identifier without additional validation.
 
-| Visualization | What it shows |
-|---|---|
-| Admissions by Condition | Stacked admissions counts by condition and admission type (Urgent, Emergency, Elective) |
-| Billing by Insurance Provider | Mean patient-level cumulative billing, grouped by provider and using the original Tableau-style FIXED logic |
-| Average Over Time | Average stay length or average billing, with a metric switch and two time-granularity choices |
-| Billing by Condition & Test Result | Heatmap of average billing across condition and test-result categories |
+## Dashboard 2 — Hospital Operations
 
-**Interactive functionality:** Date-from/date-to controls, selections that cross-filter other charts, removable filter chips, chart hover information, and a clear-filters action. Works locally in a modern browser with no server or external JavaScript downloads.
+- **9,216 synthetic ER visits** in the source dataset
+- Admission rate: **50.0%**
+- Mean waiting time: **35.3 minutes**
+- Visits exceeding the default 30-minute target: **59.3%**
+- Service-line table by *referral department* (seven named referral departments, plus "No referral")
+- Wait-time histogram, day/time heatmap, and monthly trends
+- Adjustable 15–60 minute waiting-time threshold, admissions filter, period filter, and chart-click cross-filtering
 
-## Data source and definitions
+**Interpretation note:** This page analyzes ER arrivals and referral destinations; it is not evidence of six staffed clinical departments. The default 30-minute target is an analytical threshold rather than proof of an organizational contractual SLA.
 
-- Source: [Healthcare Dataset by prasad22 (Kaggle)](https://www.kaggle.com/datasets/prasad22/healthcare-dataset)
-- Scope: 55,500 **synthetic** admission records; selected fields are encoded directly in `index.html` for this browser-based dashboard.
-- **Total Admissions** counts admission records; this is not a distinct-patient count.
-- **Average Billing Amount** is the mean `Billing Amount` per admission record.
-- **Length of Stay** is the difference in days between admission and discharge dates.
-- **Percentage Abnormal** is the proportion of records marked `Abnormal` in `Test Results`.
-- **Insurer billing:** The dashboard recreates the logic described as `{FIXED [Name] : SUM([Billing Amount])}`. Since names are not unique identifiers, this calculation can combine different people sharing a name; interpret it as an illustrative methodology, not authoritative patient-level financial reporting.
+## Implementation
 
-The dataset does not establish actual insurance claim denials, reimbursements, bed-occupancy rates, or real patient outcomes. These dashboard visuals should not be treated as clinical or financial decision support.
+- **Frontend:** HTML5, CSS3, JavaScript, inline D3.js v7.9.2 (SVG charts)
+- **Data:** compressed public synthetic dataset extracts embedded directly into `index.html`
+- **Deployment:** GitHub Pages — static site, no backend
+- **Interaction:** responsive tabs, dynamic KPI calculations, filters, trend switches, tooltips, and heatmaps
 
-## How to run locally
+The project is a **web recreation**. It does **not** include a native `.pbix` Power BI or Tableau workbook, nor executable SQL ETL pipelines. Example SQL/DAX formulas displayed as documentation in the dashboard are not proof that the web page was built with those tools.
 
-1. Download or clone this repository.
-2. Open `index.html` in a recent browser (Chrome, Edge, or Firefox).
-3. Use the filters and metric dropdowns to explore the charts.
+## Reproducibility and data sources
 
-No Python packages, local web server, or API keys are required.
+- Healthcare admissions and billing: [Kaggle Healthcare Dataset (prasad22)](https://www.kaggle.com/datasets/prasad22/healthcare-dataset).
+- Hospital ER source and reference: [Harsh Raj's Hospital ER dashboard repository](https://github.com/rjharshpatel/hospital-er-dashboard).
 
-## Files
+Both dashboards are reproductions of published examples. The billing/utilization visualization was inspired by [Ananyaa Shahi's Healthcare Utilization & Billing Dashboard](https://github.com/AnanyaaShahi/Healthcare-Utilization-Billing-Dashboard). Please check upstream dataset and code licensing terms before redistributing their underlying material. Do not interpret synthetic patient or encounter records as real clinical data.
 
-```text
-Healthcare-Utilization-Billing-Dashboard/
-├── index.html             # Standalone interactive dashboard, includes chart code/data
-├── dashboard-preview.png  # Screenshot of the dashboard
-└── README.md              # Project overview, definitions, and usage
-```
+## Deploy on GitHub Pages
 
-## Technology
+1. Put `index.html`, `README.md` and `dashboard-preview.png` at the **root** of the repository.
+2. In GitHub, open **Settings → Pages**.
+3. Choose **Deploy from a branch**, `main`, `/(root)`, then save.
+4. When deployment finishes, open the live dashboard URL above.
 
-HTML5, CSS3, JavaScript, D3.js (bundled in the HTML), GitHub Pages. The source dashboard that inspired this project was built in Tableau; **this recreation is a web application, not a Tableau workbook**.
-
-## Inspiration & acknowledgments
-
-This is an independent, AI-assisted recreation of [AnanyaaShahi's Healthcare Utilization & Billing Dashboard](https://github.com/AnanyaaShahi/Healthcare-Utilization-Billing-Dashboard). It draws on the publicly documented dashboard layout and analytical questions. The original author retains attribution for the inspiration. Dataset credit goes to [prasad22 on Kaggle](https://www.kaggle.com/datasets/prasad22/healthcare-dataset). Please review the dataset's permissions before redistributing or extending its records.
-
-## Portfolio note
-
-This project demonstrates interactive web-based healthcare utilization and billing analytics. Add any independently implemented SQL, Pandas, Tableau, or Power BI artifacts as separate files only if you have actually produced them.
+To update an existing deployment, commit a new `index.html` in the same root folder. Your repository URL and Pages URL remain the same.
